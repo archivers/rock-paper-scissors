@@ -2,11 +2,18 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <script src="./js/script.js"></script>
+    <script src="./js/script.js" defer></script>
     <title>Rock Paper Scissors</title>
   </head>
   
   <body>
-    <p>WINS: <span id="gameWins"></span> TIES: <span id="gameTies"></span> LOSES: <span id="gameLoses"></span></p>
+    <p>
+      <button id="rock">Rock</button>
+      <button id="paper">Paper</button>
+      <button id="scissor">Scissor</button>
+    </p>
+    <div id="score">
+      WINS: <span id="gameWins"></span> TIES: <span id="gameTies"></span> LOSES: <span id="gameLoses"></span>
+    </div>
   </body>
 </html>

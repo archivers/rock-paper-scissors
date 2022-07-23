@@ -31,19 +31,22 @@ function playRound(playerSelection, computerSelection) {
   if(playerSelection === "rock" && computerSelection === "scissor" || playerSelection === "paper" && computerSelection === "rock" || playerSelection === "scissor" && computerSelection === "paper") {
     console.log("You Won! " + playerSelection + " beats " + computerSelection);
     globalThis.roshambo.stats.wins++;
+    updateScore(getWinsDiv());
   } else if(playerSelection === computerSelection) {
     console.log("You Tied! You both picked " + playerSelection);
     globalThis.roshambo.stats.ties++;
+    updateScore(getTiesDiv());
   } else {
     console.log("You Lost! " + computerSelection + " beats " + playerSelection);
     globalThis.roshambo.stats.loses++;
+    updateScore(getLosesDiv());
   }
 }
 
 function game() {
   initializeGame();
   
-  for (let i = 0; i < 5; i++) {
+  while (true) {
     playRound(hoomanPlay(),computerPlay());
     document.getElementById("gameWins").textContent = globalThis.roshambo.stats.wins;
     document.getElementById("gameTies").textContent = globalThis.roshambo.stats.ties;
@@ -65,3 +68,29 @@ function initializeGame() {
   globalThis.roshambo.stats.ties = 0;
   globalThis.roshambo.stats.loses = 0;
 }
+
+function getWinsDiv() {
+  return document.getElementById("gameWins");
+}
+
+function getTiesDiv() {
+  return document.getElementById("gameTies");
+}
+
+function getLosesDiv() {
+  return document.getElementById("gameLoses");
+}
+
+function updateScore(div) {
+  let temp = div.textContent;
+  div.textContent = (+temp)+1;
+}
+
+const rockButt = document.getElementById("rock");
+rockButt.addEventListener('click', ()=>playRound('rock', computerPlay()));
+
+const paperButt = document.getElementById("paper");
+paperButt.addEventListener('click', ()=>playRound('paper', computerPlay()));
+
+const scissorButt = document.getElementById("scissor");
+scissorButt.addEventListener('click', ()=>playRound('scissor', computerPlay()));
