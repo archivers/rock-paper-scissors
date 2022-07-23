@@ -15,18 +15,6 @@ function computerPlay() {
   return computerSelection;
 }
 
-function hoomanPlay() {
-  let hoomanSelection = prompt("Rock, Paper, or Scissor");
-  hoomanSelection = hoomanSelection.toLowerCase();
-
-  if(hoomanSelection === "rock" || hoomanSelection === "paper" || hoomanSelection === "scissor") {
-    return hoomanSelection;
-  } else {
-    alert("DETECTED PEBKAC, PLEASE ENTER A CORRECT INPUT");
-    return hoomanPlay();
-  }
-}
-
 function playRound(playerSelection, computerSelection) {
   if(playerSelection === "rock" && computerSelection === "scissor" || playerSelection === "paper" && computerSelection === "rock" || playerSelection === "scissor" && computerSelection === "paper") {
     console.log("You Won! " + playerSelection + " beats " + computerSelection);
@@ -45,28 +33,21 @@ function playRound(playerSelection, computerSelection) {
 
 function game() {
   initializeGame();
-  
-  while (true) {
-    playRound(hoomanPlay(),computerPlay());
-    document.getElementById("gameWins").textContent = globalThis.roshambo.stats.wins;
-    document.getElementById("gameTies").textContent = globalThis.roshambo.stats.ties;
-    document.getElementById("gameLoses").textContent = globalThis.roshambo.stats.loses;
-   
-  }
-
-  if(globalThis.roshambo.stats.wins > globalThis.roshambo.stats.loses) {
-      alert("You beat the robot, hail human superiority");
-    } else if (globalThis.roshambo.stats.loses > globalThis.roshambo.stats.wins) {
-      alert("You lost, skynet has taken over the world");
-    } else{
-      alert("You tied, shame on you");
-    }
 }
 
 function initializeGame() {
   globalThis.roshambo.stats.wins = 0;
   globalThis.roshambo.stats.ties = 0;
   globalThis.roshambo.stats.loses = 0;
+
+  let wins = getWinsDiv();
+  wins.textContent = "";
+  let ties = getTiesDiv();
+  ties.textContent = "";
+  let loses = getLosesDiv();
+  loses.textContent = "";
+  winner = getWinnerDiv();
+  winner.textContent = "";
 }
 
 function getWinsDiv() {
@@ -81,9 +62,37 @@ function getLosesDiv() {
   return document.getElementById("gameLoses");
 }
 
+function getWinnerDiv() {
+  return document.getElementById("winner");
+}
+
 function updateScore(div) {
   let temp = div.textContent;
   div.textContent = (+temp)+1;
+}
+
+function checkForWinner() {
+  return (globalThis.roshambo.stats.wins >= 5 || globalThis.roshambo.stats.loses >= 5);
+}
+
+function getWinner() {
+  if(checkForWinner()){
+    if (globalThis.roshambo.stats.wins >= 5) {
+      return "player";}
+    else return "skynet";
+  }
+  else return "";
+}
+
+function updateWinner() {
+  if (checkForWinner()) {
+    const winner = getWinnerDiv();
+    winner.textContent = getWinner();
+
+    alert("Thank you for playing! " + winner.textContent.toUpperCase() + " is the winner!");
+
+    initializeGame();
+  }
 }
 
 const rockButt = document.getElementById("rock");
@@ -94,3 +103,8 @@ paperButt.addEventListener('click', ()=>playRound('paper', computerPlay()));
 
 const scissorButt = document.getElementById("scissor");
 scissorButt.addEventListener('click', ()=>playRound('scissor', computerPlay()));
+
+const buttons = document.querySelectorAll("button");
+for(let button of buttons) {
+  button.addEventListener('click', ()=>updateWinner());
+}
